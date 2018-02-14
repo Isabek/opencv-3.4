@@ -43,4 +43,22 @@ RUN make -j$NUM_CORES
 RUN make install
 RUN ldconfig
 
+WORKDIR /
+RUN wget https://github.com/edenhill/librdkafka/archive/v0.11.3.zip && \
+    unzip -q v0.11.3.zip && mv /librdkafka-0.11.3 /librdkafka
+
+WORKDIR /librdkafka
+RUN ./configure
+RUN make
+RUN make install
+
+WORKDIR /
+RUN wget https://github.com/mfontanini/cppkafka/archive/v0.1.zip && \
+    unzip -q v0.1.zip && mv /cppkafka-0.1 /cppkafka
+RUN mkdir /cppkafka/build
+WORKDIR /cppkafka/build
+RUN cmake ..
+RUN make
+RUN make install
+
 WORKDIR /home
